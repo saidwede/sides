@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="z-40 fixed left-0 top-0 h-12 w-screen shadow bg-white">
+        <div className="z-40 fixed flex justify-center items-center left-0 top-0 h-12 w-screen shadow bg-white">
           <div className="absolute cursor-pointer md:hidden top-1/2 -translate-y-1/2 left-3 w-10 h-full flex items-center justify-center">
             <IoIosMenu 
               onClick={() => {setRightMobileExpanded(false); setLeftMobileExpanded(!leftMobileExpanded)}}
@@ -44,6 +44,7 @@ export default function RootLayout({ children }) {
               onClick={() => {setLeftMobileExpanded(false); setRightMobileExpanded(!rightMobileExpanded)}}
             />
           </div>
+          <span className="text-lg font-bold">Slide App</span>
         </div>
         <div className=" z-30 flex fixed left-0 top-0 w-screen h-screen bg-neutral-100">
           <div className={`pt-16 flex flex-col gap-6 items-center shrink-0 relative h-full transition-all duration-300 ${leftExpanded? 'md:w-48' : 'md:w-12'} ${leftMobileExpanded? 'w-48' : 'w-0'} shadow bg-white`}>
@@ -76,7 +77,7 @@ export default function RootLayout({ children }) {
               className="absolute h-8 w-8 hidden md:flex items-center justify-center rounded-full bg-white top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 shadow cursor-pointer">
               <MdMenuOpen  className={`${rightExpanded? 'rotate-180' : ''} transition-all duration-500 delay-300`}/>
             </div>
-            <div className={`w-full grid ${rightExpanded? 'md:grid-cols-4' : 'md:grid-cols-1'} ${rightMobileExpanded? 'grid-cols-4' : 'hidden'} gap-2`}>
+            <div className={`grid ${rightExpanded? 'md:grid-cols-4' : 'md:grid-cols-1'} ${rightMobileExpanded? 'grid-cols-4' : 'grid-cols-1'} gap-2`}>
               <div className="flex justify-center items-center h-10 w-10 bg-neutral-200 rounded-md">
                 <IoCopy />
               </div>
