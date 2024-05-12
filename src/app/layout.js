@@ -6,10 +6,12 @@ import { MdMenuOpen } from "react-icons/md";
 import { SlOptionsVertical } from "react-icons/sl";
 import { IoIosMenu } from "react-icons/io";
 import { useState } from "react";
-import { IoHomeOutline } from "react-icons/io5";
+import { FaHome } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
-import { MdOutlineDashboard } from "react-icons/md";
-import { MdOutlinePayments } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
+import { MdPayments } from "react-icons/md";
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { FaTools } from "react-icons/fa";
 
 import { IoCopy } from "react-icons/io5";
 import { FaCut } from "react-icons/fa";
@@ -27,6 +29,13 @@ import { FaLock } from "react-icons/fa";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const cursorPostionArray = [
+  "top-[0.5rem]",
+  "top-[calc(1.5rem+3rem)]",
+  "top-[calc(2.5rem+6rem)]",
+  "top-[calc(3.5rem+9rem)]",
+  "top-[calc(4.5rem+12rem)]"
+]
 
 
 export default function RootLayout({ children }) {
@@ -35,51 +44,81 @@ export default function RootLayout({ children }) {
   const [rightExpanded, setRightExpanded] = useState(false)
   const [leftMobileExpanded, setLeftMobileExpanded] = useState(false)
   const [rightMobileExpanded, setRightMobileExpanded] = useState(false)
+  const [cursorPostion, setCursorPostion] = useState(cursorPostionArray[0])
+  const [currentPos, setCurrentPos] = useState(0)
+  
+  function changePosTo(pos){
+    setCursorPostion(cursorPostionArray[pos])
+    setCurrentPos(pos)
+  }
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="z-40 fixed flex justify-center items-center left-0 top-0 h-12 w-screen shadow bg-white">
-          <div className="absolute cursor-pointer md:hidden top-1/2 -translate-y-1/2 left-3 w-10 h-full flex items-center justify-center">
-            <IoIosMenu 
-              onClick={() => {setRightMobileExpanded(false); setLeftMobileExpanded(!leftMobileExpanded)}}
-            />
-          </div>
-          <div className="absolute cursor-pointer md:hidden top-1/2 -translate-y-1/2 right-3 w-10 h-full flex items-center justify-center">
-            <SlOptionsVertical 
-              onClick={() => {setLeftMobileExpanded(false); setRightMobileExpanded(!rightMobileExpanded)}}
-            />
-          </div>
-          <span className="text-lg font-bold">Slide App</span>
-        </div>
-        <div className=" z-30 flex fixed left-0 top-0 w-screen h-screen bg-neutral-100">
-          <div className={`pt-16 flex flex-col gap-6 items-center shrink-0 relative h-full transition-all duration-300 ${leftExpanded? 'md:w-48' : 'md:w-12'} ${leftMobileExpanded? 'w-48' : 'w-0'} shadow bg-white`}>
-            <div className="w-[calc(100%-8px)]">
-              <div className={ `bg-black text-white rounded-lg cursor-pointer flex py-2 items-center overflow-hidden flex-nowrap w-full ${leftExpanded? 'md:justify-start md:pl-3' : 'md:justify-center md:pl-0'} ${leftMobileExpanded? 'justify-start pl-3' : 'justify-center pl-0'}` }>
-                <IoHomeOutline className="text-xl shrink-0" />
-                <span className={`pl-4 text-sm ${leftExpanded? 'md:inline-block' : 'md:hidden'} ${leftMobileExpanded? ' inline-block' : 'hidden'}`}>Home</span>
+        
+        <div className=" z-30 flex fixed items-stretch left-0 top-0 w-screen h-screen bg-primary">
+          <div className={`pt-16 flex flex-col gap-6 items-center shrink-0 relative h-full transition-all duration-300 ${leftExpanded? 'w-48' : 'w-12'} shadow bg-primary`}>
+            <div 
+              onClick={() => {setLeftExpanded(!leftExpanded);}}
+              className="absolute h-8 w-8 flex items-center justify-center rounded-full bg-white bottom-10 right-1/2 translate-x-1/2 shadow cursor-pointer">
+              <TbLayoutSidebarLeftExpand  className={`${leftExpanded? 'rotate-180' : ''} transition-all duration-500 delay-300`}/>
+            </div>
+            <div className="flex justify-center w-full items-center absolute top-20 md:top-10 right-1/2 translate-x-1/2">
+              <FaWandMagicSparkles className="text-2xl text-white" />
+              <span className={`text-white text-sm ml-3 ${!leftExpanded? 'hidden' : ''}`}>Magic Side Bar</span>
+            </div>
+            <div className="w-full z-20 absolute top-1/2 -translate-y-1/2 grid gap-12">
+              <div className={`absolute right-0 translate-x-1/2 ${cursorPostion} ${leftExpanded? 'hidden' : ''} transition-all duration-300 -translate-y-1/2`}>
+                <img src="/elipse.svg" className=" scale-125" />
+                <div className="h-9 w-9 rounded-full bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
               </div>
-              <div className=" cursor-pointer flex pl-3 py-2 items-center justify-start overflow-hidden flex-nowrap w-full">
-                <MdOutlineDashboard className="text-xl shrink-0" />
-                <span className={`pl-4 text-sm ${leftExpanded? 'md:inline-block' : 'md:hidden'} ${leftMobileExpanded? ' inline-block' : 'hidden'}`}>Dashboard</span>
+              <div className={`absolute bg-white h-12 w-[calc(100%-10px)] left-1/2 rounded-2xl -translate-x-1/2 ${cursorPostion} ${!leftExpanded? 'hidden' : ''} transition-all duration-300 -translate-y-1/2`}>
+                
               </div>
-              <div className=" cursor-pointer flex pl-3 py-2 items-center justify-start overflow-hidden flex-nowrap w-full">
-                <FaUsers className="text-xl shrink-0" />
-                <span className={`pl-4 text-sm ${leftExpanded? 'md:inline-block' : 'md:hidden'} ${leftMobileExpanded? ' inline-block' : 'hidden'}`}>Users</span>
+              <div onClick={() => {changePosTo(0)}} className={ `text-white cursor-pointer flex  py-2 items-center justify-center overflow-hidden flex-nowrap w-full` }>
+                <FaHome className={`${leftExpanded ? 'left-1' : ''} text-xl shrink-0 transition-all duration-300 absolute ${currentPos == 0 && !leftExpanded ? 'text-yellow-300 right-0 translate-x-1/2' : 'right-1/2 translate-x-1/2'} ${currentPos == 0 && leftExpanded ? 'text-primary' : ''}`} />
+                <span className={`pl-4 text-sm absolute left-8 ${leftExpanded? 'inline-block' : 'hidden'} ${currentPos == 0 && leftExpanded ? 'text-primary' : ''}`}>Home</span>
               </div>
-              <div className=" cursor-pointer flex pl-3 py-2 items-center justify-start overflow-hidden flex-nowrap w-full">
-                <MdOutlinePayments className="text-xl shrink-0" />
-                <span className={`pl-4 text-sm ${leftExpanded? 'md:inline-block' : 'md:hidden'} ${leftMobileExpanded? ' inline-block' : 'hidden'}`}>Payments</span>
+              <div onClick={() => {changePosTo(1)}} className="text-white cursor-pointer flex  py-2 items-center justify-center overflow-hidden flex-nowrap w-full">
+                <MdDashboard className={`${leftExpanded ? 'left-1' : ''} text-xl shrink-0 transition-all duration-300 absolute ${currentPos == 1 && !leftExpanded ? 'text-yellow-300 right-0 translate-x-1/2' : 'right-1/2 translate-x-1/2'} ${currentPos == 1 && leftExpanded ? 'text-primary' : ''}`} />
+                <span className={`pl-4 text-sm absolute left-8 ${leftExpanded? 'inline-block' : 'hidden'} ${currentPos == 1 && leftExpanded ? 'text-primary' : ''}`}>Dashboard</span>
               </div>
-              <div 
-                onClick={() => {setLeftExpanded(!leftExpanded);}}
-                className="absolute h-8 w-8 hidden md:flex items-center justify-center rounded-full bg-white top-1/2 -translate-y-1/2 right-0 translate-x-1/2 shadow cursor-pointer">
-                <TbLayoutSidebarLeftExpand  className={`${leftExpanded? 'rotate-180' : ''} transition-all duration-500 delay-300`}/>
+              <div onClick={() => {changePosTo(2)}} className="text-white cursor-pointer flex  py-2 items-center justify-center overflow-hidden flex-nowrap w-full">
+                <FaUsers className={`${leftExpanded ? 'left-1' : ''} text-xl shrink-0 transition-all duration-300 absolute ${currentPos == 2 && !leftExpanded ? 'text-yellow-300 right-0 translate-x-1/2' : 'right-1/2 translate-x-1/2'} ${currentPos == 2 && leftExpanded ? 'text-primary' : ''}`} />
+                <span className={`pl-4 text-sm absolute left-8 ${leftExpanded? 'inline-block' : 'hidden'} ${currentPos == 2 && leftExpanded ? 'text-primary' : ''}`}>Users</span>
               </div>
+              <div onClick={() => {changePosTo(3)}} className="text-white cursor-pointer flex  py-2 items-center justify-center overflow-hidden flex-nowrap w-full">
+                <MdPayments className={`${leftExpanded ? 'left-1' : ''} text-xl shrink-0 transition-all duration-300 absolute ${currentPos == 3 && !leftExpanded ? 'text-yellow-300 right-0 translate-x-1/2' : 'right-1/2 translate-x-1/2'} ${currentPos == 3 && leftExpanded ? 'text-primary' : ''}`} />
+                <span className={`pl-4 text-sm absolute left-8 ${leftExpanded? 'inline-block' : 'hidden'} ${currentPos == 3 && leftExpanded ? 'text-primary' : ''}`}>Payments</span>
+              </div>
+              <div onClick={() => {changePosTo(4)}} className="text-white cursor-pointer flex  py-2 items-center justify-center overflow-hidden flex-nowrap w-full">
+                <FaTools className={`${leftExpanded ? 'left-1' : ''} text-xl shrink-0 transition-all duration-300 absolute ${currentPos == 4 && !leftExpanded ? 'text-yellow-300 right-0 translate-x-1/2' : 'right-1/2 translate-x-1/2'} ${currentPos == 4 && leftExpanded ? 'text-primary' : ''}`} />
+                <span className={`pl-4 text-sm absolute left-8 ${leftExpanded? 'inline-block' : 'hidden'} ${currentPos == 4 && leftExpanded ? 'text-primary' : ''}`}>Tools</span>
+              </div>
+              
+              
             </div>
             
           </div>
-          <div className="grow"></div>
+          <div className="grow relative rounded-tl-2xl rounded-bl-2xl bg-white overflow-hidden text-black pt-10">
+
+          <div className="z-40 fixed md:absolute flex justify-center items-center left-0 top-0 h-12 w-full shadow bg-white">
+            {/* <div className="absolute cursor-pointer md:hidden top-1/2 -translate-y-1/2 left-3 w-10 h-full flex items-center justify-center">
+              <IoIosMenu 
+                onClick={() => {setRightMobileExpanded(false); setLeftMobileExpanded(!leftMobileExpanded)}}
+              />
+            </div> */}
+            <div className="absolute cursor-pointer md:hidden top-1/2 -translate-y-1/2 right-3 w-10 h-full flex items-center justify-center">
+              <SlOptionsVertical 
+                onClick={() => {setLeftMobileExpanded(false); setRightMobileExpanded(!rightMobileExpanded)}}
+              />
+            </div>
+            <span className="text-lg font-bold">Slide App</span>
+          </div>
+          <div className="p-10">
+            Content Here
+          </div>
+          </div>
           <div className={`flex flex-col items-center pt-14 shrink-0 relative h-full transition-all duration-300 ${rightExpanded? 'md:w-48' : 'md:w-12'} ${rightMobileExpanded? 'w-48' : 'w-0'} shadow bg-white`}>
             <div 
               onClick={() => {setRightExpanded(!rightExpanded)}}
